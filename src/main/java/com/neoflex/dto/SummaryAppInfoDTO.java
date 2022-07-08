@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class SummaryAppInfo {
+public class SummaryAppInfoDTO {
     String fullName;
     LocalDate birthdate;
     String gender;
@@ -17,7 +17,7 @@ public class SummaryAppInfo {
     String email;
     String martialStatus;
     Integer dependentAmount;
-    Employment employment;
+    EmploymentDTO employmentDTO;
     BigDecimal amount;
     Integer term;
     BigDecimal monthlyPayment;
@@ -25,6 +25,6 @@ public class SummaryAppInfo {
     BigDecimal psk;
     Boolean isInsuranceEnabled;
     Boolean isSalaryClient;
-    List<PaymentScheduleElement> paymentScheduleElementList;
+    List<PaymentScheduleElementDTO> paymentScheduleElementDTOList;
     Integer sesCode;
 }

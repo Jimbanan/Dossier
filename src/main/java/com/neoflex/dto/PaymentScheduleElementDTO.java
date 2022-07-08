@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class PaymentScheduleElement {
+public class PaymentScheduleElementDTO {
 
     private Integer number;
     private LocalDate date;

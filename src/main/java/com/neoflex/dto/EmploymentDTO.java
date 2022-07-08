@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class Employment {
+public class EmploymentDTO {
     private Long id;
     private String employmentStatus;
     private String employer;

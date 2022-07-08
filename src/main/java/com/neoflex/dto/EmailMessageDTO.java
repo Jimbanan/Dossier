@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailMessage {
+public class EmailMessageDTO {
     private String address;
     private Theme theme;
     private Long applicationId;
