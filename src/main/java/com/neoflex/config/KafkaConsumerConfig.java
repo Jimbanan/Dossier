@@ -1,6 +1,6 @@
 package com.neoflex.config;
 
-import com.neoflex.dto.EmailMessage;
+import com.neoflex.dto.EmailMessageDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, EmailMessage> consumerFactory() {
+    public ConsumerFactory<String, EmailMessageDTO> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 
