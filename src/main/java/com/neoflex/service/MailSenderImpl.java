@@ -1,5 +1,6 @@
 package com.neoflex.service;
 
+import com.neoflex.dto.SummaryAppInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,7 +16,12 @@ public class MailSenderImpl implements MailSender {
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private DocumentGenerationServiceImpl documentGenerationService;
 
+    @Autowired
+    private SummaryInfoService summaryInfoService;
+    
     private SimpleMailMessage templateMessage = new SimpleMailMessage();
 
     @Override
@@ -29,7 +35,32 @@ public class MailSenderImpl implements MailSender {
     }
 
     @Override
-    public void sendEmailWithAttachment(String to, String subject, String text, String[] pathToAttachment) {
+    public void sendEmailWithAttachment(String to, String subject, String text, Long id) {
+        SummaryAppInfoDTO summaryInfo = summaryInfoService.getSumInfoFromDealClient(id);
 
+        File credit_application = documentGenerationService.createCreditApplicationDocument(summaryInfo, id);
+        File credit_contract = documentGenerationService.createCreditContractDocument(summaryInfo, id);
+        File credit_payment_schedule = documentGenerationService.createCreditPaymentScheduleDocument(summaryInfo, id);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("neoflexprojectconveyor@mail.ru");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text);
+            helper.addAttachment(credit_application.getName(), credit_application);
+            helper.addAttachment(credit_contract.getName(), credit_contract);
+            helper.addAttachment(credit_payment_schedule.getName(), credit_payment_schedule);
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } finally {
+            credit_application.delete();
+            credit_contract.delete();
+            credit_payment_schedule.delete();
+        }
     }
 }
