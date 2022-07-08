@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class DocumentGenerationServiceImpl implements DocumentGenerationService {
 
     public File createCreditApplicationDocument(SummaryAppInfoDTO summaryInfo, Long id) {
+        log.info("createCreditApplicationDocument() - File: Формирование документа <credit_application>");
 
         StringBuilder stringBuilder = new StringBuilder("КРЕДИТНАЯ ЗАЯВКА № " + id + " от " + LocalDateTime.now())
                 .append("\n\nИнформация о клиенте")
@@ -34,6 +35,8 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 .append("\n\tОпыт работы (общий): ").append(summaryInfo.getEmploymentDTO().getWorkExperienceTotal())
                 .append("\n\tОпыт работы (текущий): ").append(summaryInfo.getEmploymentDTO().getWorkExperienceCurrent());
 
+        log.info("createCreditApplicationDocument() - File: Содержание документа <credit_application> сформировано");
+
         File credit_application = null;
 
         try {
@@ -43,7 +46,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
-
+            log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,6 +55,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     }
 
     public File createCreditContractDocument(SummaryAppInfoDTO summaryInfo, Long id) {
+        log.info("createCreditContractDocument() - File: Формирование документа <credit_contract>");
 
         StringBuilder stringBuilder = new StringBuilder("КРЕДИТНАЯ ЗАЯВКА № " + id + " от " + LocalDateTime.now())
                 .append("\n\nПолное имя клиента: ").append(summaryInfo.getFullName())
@@ -65,6 +69,8 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 .append("\n\tСтраховка включена: ").append(summaryInfo.getIsInsuranceEnabled())
                 .append("\n\tЗарплатный клиент: ").append(summaryInfo.getIsInsuranceEnabled());
 
+        log.info("createCreditContractDocument() - File: Содержание документа <credit_contract> сформировано");
+
         File credit_contract = null;
 
         try {
@@ -74,6 +80,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
+            log.info("createCreditContractDocument() - File: Документ <credit_contract> сформирован и сохранен");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,17 +90,20 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     }
 
     public File createCreditPaymentScheduleDocument(SummaryAppInfoDTO summaryInfo, Long id) {
+        log.info("createCreditPaymentScheduleDocument() - File: Формирование документа <credit_payment_schedule>");
 
         StringBuilder stringBuilder = new StringBuilder("Ежемесячные платежи по договору № " + id + " от " + LocalDateTime.now());
 
         for (PaymentScheduleElementDTO paymentScheduleElementDTO : summaryInfo.getPaymentScheduleElementDTOList()) {
             stringBuilder.append("\nМесяц платежа № ").append(paymentScheduleElementDTO.getNumber())
                     .append("\n\tДата платежа: ").append(paymentScheduleElementDTO.getDate().toString())
-                    .append("\n\tМесячный платёж: ").append(paymentScheduleElementDTO.getTotalPayment())
+                    .append("\n\tЕжемесячный платёж: ").append(paymentScheduleElementDTO.getTotalPayment())
                     .append("\n\tПогашение процентов: ").append(paymentScheduleElementDTO.getInterestPayment())
                     .append("\n\tПогашение основного долга: ").append(paymentScheduleElementDTO.getDebtPayment())
                     .append("\n\tОстаток долга: ").append(paymentScheduleElementDTO.getRemainingDebt());
         }
+
+        log.info("createCreditPaymentScheduleDocument() - File: Содержание документа <credit_payment_schedule> сформировано");
 
         File credit_payment_schedule = null;
 
@@ -104,6 +114,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
+            log.info("createCreditPaymentScheduleDocument() - File: Документ <credit_payment_schedule> сформирован и сохранен");
 
         } catch (IOException e) {
             e.printStackTrace();

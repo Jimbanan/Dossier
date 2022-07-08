@@ -1,6 +1,7 @@
 package com.neoflex.service;
 
 import com.neoflex.dto.SummaryAppInfoDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 @Service
+@Slf4j
 public class MailSenderImpl implements MailSender {
 
     @Autowired
@@ -32,6 +34,7 @@ public class MailSenderImpl implements MailSender {
         message.setSubject(subject);
         message.setText(text);
         javaMailSender.send(message);
+        log.info("sendEmail() - void: Сообщение отправлено");
     }
 
     @Override
@@ -41,6 +44,7 @@ public class MailSenderImpl implements MailSender {
         File credit_application = documentGenerationService.createCreditApplicationDocument(summaryInfo, id);
         File credit_contract = documentGenerationService.createCreditContractDocument(summaryInfo, id);
         File credit_payment_schedule = documentGenerationService.createCreditPaymentScheduleDocument(summaryInfo, id);
+        log.info("sendEmailWithAttachment() - void: Документы сформированы");
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper;
@@ -55,12 +59,15 @@ public class MailSenderImpl implements MailSender {
             helper.addAttachment(credit_contract.getName(), credit_contract);
             helper.addAttachment(credit_payment_schedule.getName(), credit_payment_schedule);
             javaMailSender.send(message);
+            log.info("sendEmailWithAttachment() - void: Сообщение с документами отправлено");
         } catch (MessagingException e) {
             e.printStackTrace();
         } finally {
+            log.info("sendEmailWithAttachment() - void: Удаление сформированных документов");
             credit_application.delete();
             credit_contract.delete();
             credit_payment_schedule.delete();
+            log.info("sendEmailWithAttachment() - void: Документы удалены");
         }
     }
 }
