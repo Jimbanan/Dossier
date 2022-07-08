@@ -2,10 +2,10 @@ package com.neoflex.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neoflex.dto.EmailMessage;
+import com.neoflex.dto.EmailMessageDTO;
+import com.neoflex.feignclient.DealClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
@@ -17,21 +17,115 @@ public class KafkaListeners {
 
     private final ObjectMapper objectMapper;
     private final MailSenderImpl mailSender;
+    private final DealClient dealClient;
 
     @KafkaListener(topics = {"finish-registration", "create-documents", "send-documents",
             "send-ses", "credit-issued", "application-denied"}, groupId = "groupId")
     void listener(String str) throws JsonProcessingException {
 
-//        EmailMessage emailMessage = objectMapper.readValue(str, EmailMessage.class);
+        EmailMessageDTO emailMessageDTO = objectMapper.readValue(str, EmailMessageDTO.class);
+        StringBuilder body = new StringBuilder();
 
-        System.out.println("TEST");
-        try {
-            mailSender.sendEmail("neoflexprojectconveyor@mail.ru", "Test", "Привет, товарищи. Присылаю вам письмо...");
-            System.out.println("Mail sended");
-        } catch (MailException mailException) {
-            System.out.println("Mail send failed.");
-            mailException.printStackTrace();
+        log.info("listener() - void: Отправка по адресу: " + emailMessageDTO.getAddress() + " Тема: " + emailMessageDTO.getTheme());
+
+        switch (emailMessageDTO.getTheme()) {
+            case FINISH_REGISTRATION: {
+                try {
+                    body.append("Заявка № ")
+                            .append(emailMessageDTO.getApplicationId())
+                            .append(" успешно зарегистрирована\n")
+                            .append("\nПерейдите по ссылке для продолжения!")
+                            .append("\nhttp://localhost:8081/swagger-ui/index.html#/DealController/calculate");
+                    mailSender.sendEmail(emailMessageDTO.getAddress(), "FINISH REGISTRATION", body.toString());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
+            case CREATE_DOCUMENTS: {
+                try {
+                    body.append("Заявка № ")
+                            .append(emailMessageDTO.getApplicationId())
+                            .append(" прошла проверку\n")
+                            .append("\nПерейдите по ссылке для продолжения!")
+                            .append("\nhttp://localhost:8081/swagger-ui/index.html#/DealController/sendDocs");
+                    mailSender.sendEmail(emailMessageDTO.getAddress(), "CREATE DOCUMENTS", body.toString());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
+            case SEND_DOCUMENTS: {
+                try {
+                    body.append("Документы по заявке № ")
+                            .append(emailMessageDTO.getApplicationId())
+                            .append("\n")
+                            .append("Проверьте правильность документов и пройдите по ссылке для запроса SES кода: ")
+                            .append("\nhttp://localhost:8081/swagger-ui/index.html#/DealController/singDocs");
+                    mailSender.sendEmailWithAttachment(emailMessageDTO.getAddress(), "SEND DOCUMENTS", body.toString(), emailMessageDTO.getApplicationId());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
+            case SEND_SES: {
+                try {
+                    Integer sesCode = dealClient.getSummaryAppInfoFromDealMC(emailMessageDTO.getApplicationId()).getSesCode();
+                    body.append("SES код для заявки № ")
+                            .append(emailMessageDTO.getApplicationId())
+                            .append("\nSES код: ")
+                            .append(sesCode)
+                            .append("\n")
+                            .append("Пройдите по ссылке и введите SES код: ")
+                            .append("\nhttp://localhost:8081/swagger-ui/index.html#/DealController/receiveSesCode");
+                    mailSender.sendEmail(emailMessageDTO.getAddress(), "SEND SES", body.toString());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
+            case CREDIT_ISSUED: {
+                try {
+                    body.append("Кредит успешно выдан!\n")
+                            .append("\nДеньги поступят на счет в течении 24 часов!");
+                    mailSender.sendEmail(emailMessageDTO.getAddress(), "CREDIT ISSUED", body.toString());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
+            case APPLICATION_DENIED: {
+                try {
+                    body.append("Заявка на кредит №")
+                            .append(emailMessageDTO.getApplicationId())
+                            .append(" отклонена");
+                    mailSender.sendEmail(emailMessageDTO.getAddress(), "APPLICATION DENIED", body.toString());
+                    log.info("Сообщение успешно отправлено");
+                } catch (MailException mailException) {
+                    log.info("При отправке сообщения возникла ошибка");
+                    mailException.printStackTrace();
+                }
+                break;
+            }
+
         }
+
 
     }
 }
+
