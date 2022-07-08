@@ -20,8 +20,8 @@ public class MailSenderImpl implements MailSender {
     private DocumentGenerationServiceImpl documentGenerationService;
 
     @Autowired
-    private SummaryInfoService summaryInfoService;
-    
+    private SummaryInfoServiceImpl summaryInfoServiceImpl;
+
     private SimpleMailMessage templateMessage = new SimpleMailMessage();
 
     @Override
@@ -36,7 +36,7 @@ public class MailSenderImpl implements MailSender {
 
     @Override
     public void sendEmailWithAttachment(String to, String subject, String text, Long id) {
-        SummaryAppInfoDTO summaryInfo = summaryInfoService.getSumInfoFromDealClient(id);
+        SummaryAppInfoDTO summaryInfo = summaryInfoServiceImpl.getSummaryAppInfoDTODealMC(id);
 
         File credit_application = documentGenerationService.createCreditApplicationDocument(summaryInfo, id);
         File credit_contract = documentGenerationService.createCreditContractDocument(summaryInfo, id);
