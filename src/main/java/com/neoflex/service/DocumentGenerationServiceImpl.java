@@ -19,7 +19,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     public File createCreditApplicationDocument(SummaryAppInfoDTO summaryInfo, Long id) {
         log.info("createCreditApplicationDocument() - File: Формирование документа <credit_application>");
 
-        StringBuilder stringBuilder = new StringBuilder("КРЕДИТНАЯ ЗАЯВКА № " + id + " от " + LocalDateTime.now())
+        StringBuilder stringBuilder = new StringBuilder("Кредитная заявка № " + id + " от " + LocalDateTime.now())
                 .append("\n\nИнформация о клиенте")
                 .append("\n\tПолное имя: ").append(summaryInfo.getFullName())
                 .append("\n\tДата рождения: ").append(summaryInfo.getBirthdate())
@@ -29,11 +29,11 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
                 .append("\n\tСемейное положение: ").append(summaryInfo.getMartialStatus())
                 .append("\n\tКоличество иждивенцев: ").append(summaryInfo.getDependentAmount())
                 .append("\n\nИнформация о работе клиента")
-                .append("\n\tРабочий статус: ").append(summaryInfo.getEmploymentDTO().getEmploymentStatus())
-                .append("\n\tЗарплата: ").append(summaryInfo.getEmploymentDTO().getSalary())
-                .append("\n\tДолжность: ").append(summaryInfo.getEmploymentDTO().getPosition())
-                .append("\n\tОпыт работы (общий): ").append(summaryInfo.getEmploymentDTO().getWorkExperienceTotal())
-                .append("\n\tОпыт работы (текущий): ").append(summaryInfo.getEmploymentDTO().getWorkExperienceCurrent());
+                .append("\n\tРабочий статус: ").append(summaryInfo.getEmployment().getEmploymentStatus())
+                .append("\n\tЗарплата: ").append(summaryInfo.getEmployment().getSalary())
+                .append("\n\tДолжность: ").append(summaryInfo.getEmployment().getPosition())
+                .append("\n\tОпыт работы (общий): ").append(summaryInfo.getEmployment().getWorkExperienceTotal())
+                .append("\n\tОпыт работы (текущий): ").append(summaryInfo.getEmployment().getWorkExperienceCurrent());
 
         log.info("createCreditApplicationDocument() - File: Содержание документа <credit_application> сформировано");
 
@@ -49,6 +49,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
+            credit_application.delete();
         }
 
         return credit_application;
@@ -57,7 +58,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
     public File createCreditContractDocument(SummaryAppInfoDTO summaryInfo, Long id) {
         log.info("createCreditContractDocument() - File: Формирование документа <credit_contract>");
 
-        StringBuilder stringBuilder = new StringBuilder("КРЕДИТНАЯ ЗАЯВКА № " + id + " от " + LocalDateTime.now())
+        StringBuilder stringBuilder = new StringBuilder("Кредитная заявка № " + id + " от " + LocalDateTime.now())
                 .append("\n\nПолное имя клиента: ").append(summaryInfo.getFullName())
                 .append("\nПаспорт клиента: ").append(summaryInfo.getFullPassportData())
                 .append("\n\nИнформация о работе кредите")
@@ -84,6 +85,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
+            credit_contract.delete();
         }
 
         return credit_contract;
@@ -94,7 +96,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         StringBuilder stringBuilder = new StringBuilder("Ежемесячные платежи по договору № " + id + " от " + LocalDateTime.now());
 
-        for (PaymentScheduleElementDTO paymentScheduleElementDTO : summaryInfo.getPaymentScheduleElementDTOList()) {
+        for (PaymentScheduleElementDTO paymentScheduleElementDTO : summaryInfo.getPaymentScheduleElementList()) {
             stringBuilder.append("\nМесяц платежа № ").append(paymentScheduleElementDTO.getNumber())
                     .append("\n\tДата платежа: ").append(paymentScheduleElementDTO.getDate().toString())
                     .append("\n\tЕжемесячный платёж: ").append(paymentScheduleElementDTO.getTotalPayment())
@@ -118,6 +120,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
+            credit_payment_schedule.delete();
         }
         return credit_payment_schedule;
     }

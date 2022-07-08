@@ -17,7 +17,7 @@ public class SummaryAppInfoDTO {
     String email;
     String martialStatus;
     Integer dependentAmount;
-    EmploymentDTO employmentDTO;
+    EmploymentDTO employment;
     BigDecimal amount;
     Integer term;
     BigDecimal monthlyPayment;
@@ -25,6 +25,6 @@ public class SummaryAppInfoDTO {
     BigDecimal psk;
     Boolean isInsuranceEnabled;
     Boolean isSalaryClient;
-    List<PaymentScheduleElementDTO> paymentScheduleElementDTOList;
+    List<PaymentScheduleElementDTO> paymentScheduleElementList;
     Integer sesCode;
 }
