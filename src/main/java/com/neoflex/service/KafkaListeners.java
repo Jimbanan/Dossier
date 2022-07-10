@@ -35,7 +35,7 @@ public class KafkaListeners {
                             .append(emailMessageDTO.getApplicationId())
                             .append(" успешно зарегистрирована\n")
                             .append("\nПерейдите по ссылке для продолжения!")
-                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/DealController/calculate");
+                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/finishRegistration");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "FINISH REGISTRATION", body.toString());
                     log.info("Сообщение успешно отправлено");
                 } catch (MailException mailException) {
@@ -51,7 +51,7 @@ public class KafkaListeners {
                             .append(emailMessageDTO.getApplicationId())
                             .append(" прошла проверку\n")
                             .append("\nПерейдите по ссылке для продолжения!")
-                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/DealController/sendDocs");
+                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/sendDocs");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "CREATE DOCUMENTS", body.toString());
                     log.info("Сообщение успешно отправлено");
                 } catch (MailException mailException) {
@@ -67,7 +67,7 @@ public class KafkaListeners {
                             .append(emailMessageDTO.getApplicationId())
                             .append("\n")
                             .append("Проверьте правильность документов и пройдите по ссылке для запроса SES кода: ")
-                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/DealController/singDocs");
+                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/singDocs");
                     mailSender.sendEmailWithAttachment(emailMessageDTO.getAddress(), "SEND DOCUMENTS", body.toString(), emailMessageDTO.getApplicationId());
                     log.info("Сообщение успешно отправлено");
                 } catch (MailException mailException) {
@@ -86,7 +86,7 @@ public class KafkaListeners {
                             .append(sesCode)
                             .append("\n")
                             .append("Пройдите по ссылке и введите SES код: ")
-                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/DealController/receiveSesCode");
+                            .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/receiveSesCode");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "SEND SES", body.toString());
                     log.info("Сообщение успешно отправлено");
                 } catch (MailException mailException) {
