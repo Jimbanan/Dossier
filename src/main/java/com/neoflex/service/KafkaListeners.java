@@ -102,6 +102,14 @@ public class KafkaListeners {
                             .append("\nДеньги поступят на счет в течении 24 часов!");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "CREDIT ISSUED", body.toString());
                     log.info("Сообщение успешно отправлено");
+
+                    log.info("\n\n");
+                    log.info("-----------------------------|");
+                    log.info("|          (づ｡◕‿‿◕｡)づ       |");
+                    log.info("|ヽ༼ຈل͜ຈ༽ﾉ Я Сделяль ヽ༼ຈل͜ຈ༽ﾉ |");
+                    log.info("|(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ)|");
+                    log.info("|----------------------------|");
+
                 } catch (MailException mailException) {
                     log.info("При отправке сообщения возникла ошибка");
                     mailException.printStackTrace();
@@ -116,6 +124,13 @@ public class KafkaListeners {
                             .append(" отклонена");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "APPLICATION DENIED", body.toString());
                     log.info("Сообщение успешно отправлено");
+
+                    log.info("\n\n");
+                    log.info("-----------------------------|");
+                    log.info("|          (づ｡◕‿‿◕｡)づ       |");
+                    log.info("|ヽ༼ຈل͜ຈ༽ﾉ Я Сделяль ヽ༼ຈل͜ຈ༽ﾉ |");
+                    log.info("|(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ)|");
+                    log.info("|----------------------------|");
                 } catch (MailException mailException) {
                     log.info("При отправке сообщения возникла ошибка");
                     mailException.printStackTrace();
