@@ -20,6 +20,8 @@
         <openfeign.version>3.1.3</openfeign.version>
         <spring-cloud.version>3.1.3</spring-cloud.version>
         <objectmapper.version>2.13.3</objectmapper.version>
+        <sonar.organization>jimbanan</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
