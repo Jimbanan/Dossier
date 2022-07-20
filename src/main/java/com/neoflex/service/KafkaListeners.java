@@ -126,7 +126,7 @@ public class KafkaListeners {
                             .append(emailMessageDTO.getApplicationId())
                             .append(" отклонена");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "APPLICATION DENIED", body.toString());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
 
                     log.info("\n\n");
                     log.info("-----------------------------|");

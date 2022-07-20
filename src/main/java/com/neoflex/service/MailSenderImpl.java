@@ -41,9 +41,9 @@ public class MailSenderImpl implements MailSender {
     public void sendEmailWithAttachment(String to, String subject, String text, Long id) {
         SummaryAppInfoDTO summaryInfo = summaryInfoServiceImpl.getSummaryAppInfoDTODealMC(id);
 
-        File credit_application = documentGenerationService.createCreditApplicationDocument(summaryInfo, id);
-        File credit_contract = documentGenerationService.createCreditContractDocument(summaryInfo, id);
-        File credit_payment_schedule = documentGenerationService.createCreditPaymentScheduleDocument(summaryInfo, id);
+        File creditApplication = documentGenerationService.createCreditApplicationDocument(summaryInfo, id);
+        File creditContract = documentGenerationService.createCreditContractDocument(summaryInfo, id);
+        File creditPaymentSchedule = documentGenerationService.createCreditPaymentScheduleDocument(summaryInfo, id);
         log.info("sendEmailWithAttachment() - void: Документы сформированы");
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -55,18 +55,18 @@ public class MailSenderImpl implements MailSender {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text);
-            helper.addAttachment(credit_application.getName(), credit_application);
-            helper.addAttachment(credit_contract.getName(), credit_contract);
-            helper.addAttachment(credit_payment_schedule.getName(), credit_payment_schedule);
+            helper.addAttachment(creditApplication.getName(), creditApplication);
+            helper.addAttachment(creditContract.getName(), creditContract);
+            helper.addAttachment(creditPaymentSchedule.getName(), creditPaymentSchedule);
             javaMailSender.send(message);
             log.info("sendEmailWithAttachment() - void: Сообщение с документами отправлено");
         } catch (MessagingException e) {
             e.printStackTrace();
         } finally {
             log.info("sendEmailWithAttachment() - void: Удаление сформированных документов");
-            credit_application.delete();
-            credit_contract.delete();
-            credit_payment_schedule.delete();
+            creditApplication.delete();
+            creditContract.delete();
+            creditPaymentSchedule.delete();
             log.info("sendEmailWithAttachment() - void: Документы удалены");
         }
     }
