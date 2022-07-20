@@ -77,11 +77,11 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         log.info("createCreditContractDocument() - File: Содержание документа <credit_contract> сформировано");
 
         File creditContract = null;
-
+        FileWriter fileWriter = null;
         try {
             creditContract = File.createTempFile("credit_contract", ".txt");
 
-            FileWriter fileWriter = new FileWriter(creditContract);
+            fileWriter = new FileWriter(creditContract);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
@@ -89,6 +89,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return creditContract;
@@ -111,11 +117,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         log.info("createCreditPaymentScheduleDocument() - File: Содержание документа <credit_payment_schedule> сформировано");
 
         File creditPaymentSchedule = null;
+        FileWriter fileWriter = null;
 
         try {
             creditPaymentSchedule = File.createTempFile("credit_payment_schedule", ".txt");
 
-            FileWriter fileWriter = new FileWriter(creditPaymentSchedule);
+            fileWriter = new FileWriter(creditPaymentSchedule);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
@@ -123,6 +130,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return creditPaymentSchedule;
     }
