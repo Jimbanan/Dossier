@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 
 @Service
@@ -49,11 +48,6 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                Files.delete(creditApplication.toPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         } finally {
             try {
                 fileWriter.close();
@@ -95,11 +89,6 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                Files.delete(creditContract.toPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
 
         return creditContract;
@@ -134,11 +123,6 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                Files.delete(creditPaymentSchedule.toPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
         return creditPaymentSchedule;
     }
