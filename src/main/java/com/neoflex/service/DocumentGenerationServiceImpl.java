@@ -38,19 +38,24 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         log.info("createCreditApplicationDocument() - File: Содержание документа <credit_application> сформировано");
 
         File credit_application = null;
-
+        FileWriter fileWriter = null;
         try {
 //            credit_application = File.createTempFile("credit_application", ".txt", new File("src/main/resources"));
             credit_application = File.createTempFile("credit_application", ".txt");
 
-            FileWriter fileWriter = new FileWriter(credit_application);
+            fileWriter = new FileWriter(credit_application);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
-            fileWriter.close();
             log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
             credit_application.delete();
+        }finally {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return credit_application;
