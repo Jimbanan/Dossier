@@ -37,19 +37,19 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         log.info("createCreditApplicationDocument() - File: Содержание документа <credit_application> сформировано");
 
-        File credit_application = null;
+        File creditApplication = null;
         FileWriter fileWriter = null;
         try {
 //            credit_application = File.createTempFile("credit_application", ".txt", new File("src/main/resources"));
-            credit_application = File.createTempFile("credit_application", ".txt");
+            creditApplication = File.createTempFile("credit_application", ".txt");
 
-            fileWriter = new FileWriter(credit_application);
+            fileWriter = new FileWriter(creditApplication);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
-            credit_application.delete();
+            creditApplication.delete();
         }finally {
             try {
                 fileWriter.close();
@@ -58,7 +58,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             }
         }
 
-        return credit_application;
+        return creditApplication;
     }
 
     public File createCreditContractDocument(SummaryAppInfoDTO summaryInfo, Long id) {
@@ -78,12 +78,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         log.info("createCreditContractDocument() - File: Содержание документа <credit_contract> сформировано");
 
-        File credit_contract = null;
+        File creditContract = null;
 
         try {
-            credit_contract = File.createTempFile("credit_contract", ".txt");
+            creditContract = File.createTempFile("credit_contract", ".txt");
 
-            FileWriter fileWriter = new FileWriter(credit_contract);
+            FileWriter fileWriter = new FileWriter(creditContract);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
@@ -91,10 +91,10 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            credit_contract.delete();
+            creditContract.delete();
         }
 
-        return credit_contract;
+        return creditContract;
     }
 
     public File createCreditPaymentScheduleDocument(SummaryAppInfoDTO summaryInfo, Long id) {
@@ -113,12 +113,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         log.info("createCreditPaymentScheduleDocument() - File: Содержание документа <credit_payment_schedule> сформировано");
 
-        File credit_payment_schedule = null;
+        File creditPaymentSchedule = null;
 
         try {
-            credit_payment_schedule = File.createTempFile("credit_payment_schedule", ".txt");
+            creditPaymentSchedule = File.createTempFile("credit_payment_schedule", ".txt");
 
-            FileWriter fileWriter = new FileWriter(credit_payment_schedule);
+            FileWriter fileWriter = new FileWriter(creditPaymentSchedule);
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
             fileWriter.close();
@@ -126,9 +126,9 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            credit_payment_schedule.delete();
+            creditPaymentSchedule.delete();
         }
-        return credit_payment_schedule;
+        return creditPaymentSchedule;
     }
 
 }
