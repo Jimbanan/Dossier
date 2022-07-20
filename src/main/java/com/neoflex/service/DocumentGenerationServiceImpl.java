@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 
 @Service
@@ -40,7 +41,6 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         File creditApplication = null;
         FileWriter fileWriter = null;
         try {
-//            credit_application = File.createTempFile("credit_application", ".txt", new File("src/main/resources"));
             creditApplication = File.createTempFile("credit_application", ".txt");
 
             fileWriter = new FileWriter(creditApplication);
@@ -49,8 +49,12 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
             log.info("createCreditApplicationDocument() - File: Документ <credit_application> сформирован и сохранен");
         } catch (IOException e) {
             e.printStackTrace();
-            creditApplication.delete();
-        }finally {
+            try {
+                Files.delete(creditApplication.toPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
             try {
                 fileWriter.close();
             } catch (IOException e) {
@@ -91,7 +95,11 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            creditContract.delete();
+            try {
+                Files.delete(creditContract.toPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         return creditContract;
@@ -126,7 +134,11 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
 
         } catch (IOException e) {
             e.printStackTrace();
-            creditPaymentSchedule.delete();
+            try {
+                Files.delete(creditPaymentSchedule.toPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
         return creditPaymentSchedule;
     }

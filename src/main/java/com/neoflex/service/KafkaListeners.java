@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaListeners {
 
+    private static final String MESSAGE_SEND = "Сообщение успешно отправлено";
+    private static final String MESSAGE_NOT_SEND = "Сообщение успешно отправлено";
+
     private final ObjectMapper objectMapper;
     private final MailSenderImpl mailSender;
     private final DealClient dealClient;
@@ -37,9 +40,9 @@ public class KafkaListeners {
                             .append("\nПерейдите по ссылке для продолжения!")
                             .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/finishRegistration");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "FINISH REGISTRATION", body.toString());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
@@ -53,9 +56,9 @@ public class KafkaListeners {
                             .append("\nПерейдите по ссылке для продолжения!")
                             .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/sendDocs");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "CREATE DOCUMENTS", body.toString());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
@@ -69,9 +72,9 @@ public class KafkaListeners {
                             .append("Проверьте правильность документов и пройдите по ссылке для запроса SES кода: ")
                             .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/singDocs");
                     mailSender.sendEmailWithAttachment(emailMessageDTO.getAddress(), "SEND DOCUMENTS", body.toString(), emailMessageDTO.getApplicationId());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
@@ -88,9 +91,9 @@ public class KafkaListeners {
                             .append("Пройдите по ссылке и введите SES код: ")
                             .append("\nhttp://localhost:8085/swagger-ui/index.html#/deal-controller/receiveSesCode");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "SEND SES", body.toString());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
@@ -101,7 +104,7 @@ public class KafkaListeners {
                     body.append("Кредит успешно выдан!\n")
                             .append("\nДеньги поступят на счет в течении 24 часов!");
                     mailSender.sendEmail(emailMessageDTO.getAddress(), "CREDIT ISSUED", body.toString());
-                    log.info("Сообщение успешно отправлено");
+                    log.info(MESSAGE_SEND);
 
                     log.info("\n\n");
                     log.info("-----------------------------|");
@@ -111,7 +114,7 @@ public class KafkaListeners {
                     log.info("|----------------------------|");
 
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
@@ -132,7 +135,7 @@ public class KafkaListeners {
                     log.info("|(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ)|");
                     log.info("|----------------------------|");
                 } catch (MailException mailException) {
-                    log.info("При отправке сообщения возникла ошибка");
+                    log.info(MESSAGE_NOT_SEND);
                     mailException.printStackTrace();
                 }
                 break;
