@@ -40,7 +40,8 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         File credit_application = null;
 
         try {
-            credit_application = File.createTempFile("credit_application", ".txt", new File("src/main/resources"));
+//            credit_application = File.createTempFile("credit_application", ".txt", new File("src/main/resources"));
+            credit_application = File.createTempFile("credit_application", ".txt");
 
             FileWriter fileWriter = new FileWriter(credit_application);
             fileWriter.write(stringBuilder.toString());
@@ -75,7 +76,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         File credit_contract = null;
 
         try {
-            credit_contract = File.createTempFile("credit_contract", ".txt", new File("src/main/resources"));
+            credit_contract = File.createTempFile("credit_contract", ".txt");
 
             FileWriter fileWriter = new FileWriter(credit_contract);
             fileWriter.write(stringBuilder.toString());
@@ -110,7 +111,7 @@ public class DocumentGenerationServiceImpl implements DocumentGenerationService 
         File credit_payment_schedule = null;
 
         try {
-            credit_payment_schedule = File.createTempFile("credit_payment_schedule", ".txt", new File("src/main/resources"));
+            credit_payment_schedule = File.createTempFile("credit_payment_schedule", ".txt");
 
             FileWriter fileWriter = new FileWriter(credit_payment_schedule);
             fileWriter.write(stringBuilder.toString());
